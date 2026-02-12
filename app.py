@@ -8,11 +8,15 @@ from wtforms.validators import DataRequired
 from werkzeug.utils import secure_filename
 from flask_mail import Mail, Message
 import os
+from dotenv import load_dotenv
 from datetime import datetime
+load_dotenv()
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your_secret_key'  # Change this to a secure secret key
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:ernest@localhost:5432/portfolio'  # Update with your PostgreSQL credentials
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY') 
+
+ # Update with PostgreSQL credentials
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = 'static/images'
 app.config['CV_UPLOAD_FOLDER'] = 'static/cvs'
@@ -25,9 +29,9 @@ app.config['MAIL_SERVER']      = 'smtp.gmail.com'
 app.config['MAIL_PORT']        = 587
 app.config['MAIL_USE_TLS']     = True
 app.config['MAIL_USE_SSL']     = False
-app.config['MAIL_USERNAME']    = 'ekerekeernest10@gmail.com'         
-app.config['MAIL_PASSWORD']    = 'frjy bama dfwi fzzl'             
-app.config['MAIL_DEFAULT_SENDER'] = ('Ernest Portfolio', 'ekerekeernest10@gmail.com')
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
+app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_DEFAULT_SENDER')
 
 mail = Mail(app)
 
