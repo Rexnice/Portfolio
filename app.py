@@ -19,15 +19,14 @@ app.config['CV_UPLOAD_FOLDER'] = 'static/cvs'
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif', 'pdf'}
 
 
-# ────────────────────────────────────────
+
 # Email configuration – use Gmail + App Password
-# ────────────────────────────────────────
 app.config['MAIL_SERVER']      = 'smtp.gmail.com'
 app.config['MAIL_PORT']        = 587
 app.config['MAIL_USE_TLS']     = True
 app.config['MAIL_USE_SSL']     = False
-app.config['MAIL_USERNAME']    = 'ekerekeernest10@gmail.com'          # ← your Gmail
-app.config['MAIL_PASSWORD']    = 'frjy bama dfwi fzzl'               # ← App Password (see below)
+app.config['MAIL_USERNAME']    = 'ekerekeernest10@gmail.com'         
+app.config['MAIL_PASSWORD']    = 'frjy bama dfwi fzzl'             
 app.config['MAIL_DEFAULT_SENDER'] = ('Ernest Portfolio', 'ekerekeernest10@gmail.com')
 
 mail = Mail(app)
