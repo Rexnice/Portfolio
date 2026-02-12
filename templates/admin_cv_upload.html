@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <section class="post">
+        <header class="major">
+            <h1>Upload New CV</h1>
+            <p>Only PDF files. Uploading will replace the current CV.</p>
+        </header>
+
+        <form method="post" enctype="multipart/form-data">
+            <div class="field">
+                <label for="cv_file">Select CV (PDF only)</label>
+                <input type="file" name="cv_file" id="cv_file" accept=".pdf" required>
+            </div>
+            <ul class="actions">
+                <li><input type="submit" value="Upload CV" class="primary" /></li>
+            </ul>
+        </form>
+    </section>
+{% endblock %}

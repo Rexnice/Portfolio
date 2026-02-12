@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <section class="post">
+        <header class="major">
+            <h1>{{ title }}</h1>
+        </header>
+        <form method="post" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            {% for field in form if field.widget.input_type != 'hidden' and field.name != 'submit' %}
+            <div class="field">
+                {{ field.label }}
+                {{ field }}
+            </div>
+            {% endfor %}
+            <ul class="actions">
+                <li>{{ form.submit(class="button primary") }}</li>
+            </ul>
+        </form>
+    </section>
+{% endblock %}

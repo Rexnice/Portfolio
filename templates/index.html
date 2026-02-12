@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if featured_project %}
+    <!-- Featured Post -->
+        <article class="post featured">
+            <header class="major">
+                <span class="date">{{ featured_project.date.strftime('%B %d, %Y') }}</span>
+                <h2><a href="#">{{ featured_project.title }}</a></h2>
+                <p>{{ featured_project.description }}</p>
+            </header>
+            <a href="#" class="image main"><img src="{{ url_for('static', filename='images/' + featured_project.image) }}" alt="" /></a>
+            <ul class="actions special">
+                <li>
+                    <a href="{{ featured_project.github_link or '#' }}"
+                       class="button large"
+                       target="_blank" rel="noopener noreferrer">
+                       {% if featured_project.github_link %}View on GitHub{% else %}Full Story{% endif %}
+                    </a>
+                </li>
+            </ul>
+        </article>
+    {% endif %}
+
+    <!-- Posts -->
+        <section class="posts">
+            {% for project in projects %}
+            <article>
+                <header>
+                    <span class="date">{{ project.date.strftime('%B %d, %Y') }}</span>
+                    <h2><a href="#">{{ project.title }}</a></h2>
+                </header>
+                <a href="#" class="image fit"><img src="{{ url_for('static', filename='images/' + project.image) }}" alt="" /></a>
+                <p>{{ project.description }}</p>
+                <ul class="actions special">
+                    <li>
+                        <a href="{{ project.github_link or '#' }}"
+                           class="button"
+                           target="_blank" rel="noopener noreferrer">
+                           {% if project.github_link %}View on GitHub{% else %}Full Story{% endif %}
+                        </a>
+                    </li>
+                </ul>
+            </article>
+            {% endfor %}
+        </section>
+
+    <!-- Footer -->
+        <footer>
+            <div class="pagination">
+                <!--<a href="#" class="previous">Prev</a>-->
+                <a href="#" class="page active">1</a>
+                <a href="#" class="page">2</a>
+                <a href="#" class="page">3</a>
+                <span class="extra">&hellip;</span>
+                <a href="#" class="page">8</a>
+                <a href="#" class="page">9</a>
+                <a href="#" class="page">10</a>
+                <a href="#" class="next">Next</a>
+            </div>
+        </footer>
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <!-- Post -->
+    <section class="post">
+        <header class="major">
+            <h1>Tools I Use</h1>
+            <p>As a data analyst, these are the main tools and technologies I work with daily:</p>
+        </header>
+
+        {% if tools %}
+            <div class="tools-grid">
+                {% for tool in tools %}
+                    <div class="tool-item">
+                        {% if tool.image_filename %}
+                            <div class="tool-image">
+                                <img src="{{ url_for('static', filename='tools/' + tool.image_filename) }}" 
+                                     alt="{{ tool.name }}" 
+                                     loading="lazy">
+                            </div>
+                        {% else %}
+                            <div class="tool-image placeholder">
+                                <!-- optional fallback icon or empty box -->
+                                <span>No image</span>
+                            </div>
+                        {% endif %}
+
+                        <h3 class="tool-name">{{ tool.name }}</h3>
+                        {% if tool.description %}
+                            <p class="tool-desc">{{ tool.description }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p style="text-align: center; font-style: italic; color: #888;">
+                No tools added yet.
+            </p>
+        {% endif %}
+    </section>
+{% endblock %}

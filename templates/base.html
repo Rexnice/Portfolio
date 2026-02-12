@@ -1,0 +1,155 @@
+<!DOCTYPE HTML>
+<!--
+    Massively by HTML5 UP
+    html5up.net | @ajlkn
+    Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+    <head>
+        <title>Ernest Ekereke</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/main.css') }}" />
+        <noscript><link rel="stylesheet" href="{{ url_for('static', filename='assets/css/noscript.css') }}" /></noscript>
+    </head>
+    <body class="is-preload">
+
+        <!-- Wrapper -->
+            <div id="wrapper" {% if is_index %}class="fade-in"{% endif %}>
+
+                {% if is_index %}
+                    <!-- Intro -->
+                    <div id="intro">
+                        <div class="intro-container" style="display: flex; align-items: center; gap: 3rem; flex-wrap: wrap; max-width: 1100px; margin: 0 auto; padding: 0 2rem;">
+                            <!-- Left: Profile photo -->
+                            <div class="profile-photo" style="flex: 0 0 220px; text-align: center;">
+                                <img src="{{ url_for('static', filename='images/ernest.png') }}" 
+                                    alt="Ernest Ekereke" 
+                                    style="width: 220px; height: 220px; border-radius: 50%; object-fit: cover; border: 5px solid #ffffff; box-shadow: 0 8px 25px rgba(0,0,0,0.35);">
+                            </div>
+
+                            <!-- Right: Name + bio -->
+                            <div class="intro-text" style="flex: 1; min-width: 320px;">
+                                <h1 style="font-size: 3.2rem; margin: 0 0 1rem 0; line-height: 1.1; font-weight: 900;">
+                                    ERNEST EKEREKE<br>
+                                    <span style="font-size: 2.4rem; font-weight: 700; opacity: 0.92;">PORTFOLIO</span>
+                                </h1>
+
+                                <p style="font-size: 1.15rem; line-height: 1.65; margin: 1.2rem 0 0 0; max-width: 720px;">
+                                    I am a Data Analyst with a background in Mathematics and Statistics. I work with SQL, Excel, Python,
+                                    and Power BI to analyze data and deliver clear insights. I have a strong foundation in statistical
+                                    analysis and a growing understanding of machine learning concepts. I enjoy turning complex data into
+                                    practical, data-driven solutions. I am always learning and improving my analytical skills.
+                                    <a href="https://twitter.com/ajlkn">@ajlkn</a>
+                                </p>
+                            </div>
+                        </div>
+
+                        <ul class="actions" style="margin-top: 3.5rem;">
+                            <li><a href="#header" class="button icon solid solo fa-arrow-down scrolly">Continue</a></li>
+                        </ul>
+                    </div>
+                {% endif %}
+
+                <!-- Header -->
+                    <header id="header">
+                        <a href="{{ url_for('index') }}" class="logo">Ernest</a>
+                    </header>
+
+                <!-- Nav -->
+                    <nav id="nav">
+                        <ul class="links">
+                            <li {% if active_page == 'projects' %}class="active"{% endif %}><a href="{{ url_for('index') }}">Completed Projects</a></li>
+                            <li {% if active_page == 'tools' %}class="active"{% endif %}><a href="{{ url_for('tools') }}">Tools</a></li>
+                            <li {% if active_page == 'blog' %}class="active"{% endif %}><a href="{{ url_for('blog') }}">Blog Post</a></li>
+                            <li {% if active_page == 'cv' %}class="active"{% endif %}><a href="{{ url_for('cv') }}">CV / Resume</a></li>
+                        </ul>
+                        <ul class="icons">
+                            <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+                            <li><a href="https://www.linkedin.com/in/ernest-ekereke-ab90a5185/" class="icon brands alt fa-linkedin"><span class="label">LinkedIn</span></a></li>
+                            <li><a href="https://www.instagram.com/rexxi_nice/" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+                            <li><a href="https://github.com/Rexnice" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+                        </ul>
+                    </nav>
+
+                <!-- Main -->
+                    <div id="main">
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                <ul class="flash-messages">
+                                    {% for category, message in messages %}
+                                        <li class="{{ category }}">{{ message }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        {% endwith %}
+                        {% block content %}{% endblock %}
+                    </div>
+
+                <!-- Footer -->
+                    <footer id="footer">
+                        <section>
+                            <form method="post" action="#">
+                                <div class="fields">
+                                    <div class="field">
+                                        <label for="name">Name</label>
+                                        <input type="text" name="name" id="name" />
+                                    </div>
+                                    <div class="field">
+                                        <label for="email">Email</label>
+                                        <input type="text" name="email" id="email" />
+                                    </div>
+                                    <div class="field">
+                                        <label for="message">Message</label>
+                                        <textarea name="message" id="message" rows="3"></textarea>
+                                    </div>
+                                </div>
+                                <ul class="actions">
+                                    <li><input type="submit" value="Send Message" /></li>
+                                </ul>
+                            </form>
+                        </section>
+                        <section class="split contact">
+                            <section class="alt">
+                                <h3>Address</h3>
+                                <p>Ul. Studencka,<br />
+                                Ligota, 40-743 Katowice</p>
+                            </section>
+                            <section>
+                                <h3>Phone</h3>
+                                <p><a href="#">(48) 798-625-465</a></p>
+                            </section>
+                            <section>
+                                <h3>Email</h3>
+                                <p><a href="#">ekerekeernest10@gmail.com</a></p>
+                            </section>
+                            <section>
+                                <h3>Social</h3>
+                                <ul class="icons alt">
+                                    <li><a href="#" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li>
+                                    <li><a href="https://www.linkedin.com/in/ernest-ekereke-ab90a5185/" class="icon brands alt fa-linkedin"><span class="label">LinkedIn</span></a></li>
+                                    <li><a href="https://www.instagram.com/rexxi_nice/" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
+                                    <li><a href="https://github.com/Rexnice" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+                                </ul>
+                            </section>
+                        </section>
+                    </footer>
+
+                <!-- Copyright -->
+                    <div id="copyright">
+                        <ul><li>&copy; Ernest E</li><li>Design: <a href="https://www.linkedin.com/in/ernest-ekereke-ab90a5185/">Rexnice</a></li></ul>
+                    </div>
+
+            </div>
+
+        <!-- Scripts -->
+            <script src="{{ url_for('static', filename='assets/js/jquery.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='assets/js/jquery.scrollex.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='assets/js/jquery.scrolly.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='assets/js/browser.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='assets/js/breakpoints.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='assets/js/util.js') }}"></script>
+            <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+
+    </body>
+</html>

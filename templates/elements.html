@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <!-- Post -->
+        <section class="post">
+            <header class="major">
+                <h1>Blog Posts</h1>
+            </header>
+            {% for post in posts %}
+            <article>
+                <header>
+                    <h2>{{ post.title }}</h2>
+                    <span class="date">{{ post.date.strftime('%B %d, %Y') }}</span>
+                </header>
+                <p>{{ post.content }}</p>
+                <hr />
+            </article>
+            {% endfor %}
+        </section>
+
+{% endblock %}
