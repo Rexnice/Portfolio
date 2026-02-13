@@ -1,0 +1,5 @@
+# Sensitive environment files
+.env
+.env.local
+.env.*           # catches .env.development, .env.production, etc.
+*.env
