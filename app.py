@@ -10,7 +10,17 @@ from flask_mail import Mail, Message
 import os
 from dotenv import load_dotenv
 from datetime import datetime
+import cloudinary
+import cloudinary.uploader
 load_dotenv()
+
+# Configure Cloudinary (runs once on startup)
+cloudinary.config(
+    cloud_name=os.getenv('CLOUDINARY_CLOUD_NAME'),
+    api_key=os.getenv('CLOUDINARY_API_KEY'),
+    api_secret=os.getenv('CLOUDINARY_API_SECRET'),
+    secure=True
+)
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY') 
@@ -153,23 +163,32 @@ def blog():
 def new_project():
     form = ProjectForm()
     if form.validate_on_submit():
-        if form.image.data:
-            file = form.image.data
-            if file and allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                project = Project(
-                    title=form.title.data,
-                    description=form.description.data,
-                    image=filename,
-                    date=form.date.data,
-                    featured=form.featured.data,
-                    github_link=form.github_link.data.strip() or None
+        image_url = None
+        if form.image.data and allowed_file(form.image.data.filename):
+            try:
+                upload_result = cloudinary.uploader.upload(
+                    form.image.data,
+                    resource_type="image",
+                    folder="portfolio/projects",
+                    public_id=f"project_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
                 )
-                db.session.add(project)
-                db.session.commit()
-                flash('Project added successfully!')
-                return redirect(url_for('index'))
+                image_url = upload_result['secure_url']
+            except Exception as e:
+                flash(f'Image upload failed: {str(e)}', 'error')
+                return render_template('admin_form.html', form=form, title='New Project')
+
+        project = Project(
+            title=form.title.data,
+            description=form.description.data,
+            image=image_url,  # now stores Cloudinary URL
+            date=form.date.data,
+            featured=form.featured.data,
+            github_link=form.github_link.data.strip() or None
+        )
+        db.session.add(project)
+        db.session.commit()
+        flash('Project added successfully!')
+        return redirect(url_for('index'))
     return render_template('admin_form.html', form=form, title='New Project')
 
 @app.route('/admin/project/<int:id>/delete', methods=['POST'])
@@ -207,15 +226,23 @@ def delete_blog(id):
 def new_tool():
     form = ToolForm()
     if form.validate_on_submit():
-        filename = None
-        if form.image.data and allowed_file(form.image.data.filename):
-            filename = secure_filename(form.image.data.filename)
-            form.image.data.save(os.path.join('static/tools', filename))
+        image_url = None
+        if hasattr(form, 'image') and form.image.data and allowed_file(form.image.data.filename):
+            try:
+                upload_result = cloudinary.uploader.upload(
+                    form.image.data,
+                    resource_type="image",
+                    folder="portfolio/tools",
+                    public_id=f"tool_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+                )
+                image_url = upload_result['secure_url']
+            except Exception as e:
+                flash(f'Tool image upload failed: {str(e)}', 'error')
 
         tool = Tool(
             name=form.name.data,
             description=form.description.data,
-            image_filename=filename
+            image_filename=image_url  # now Cloudinary URL
         )
         db.session.add(tool)
         db.session.commit()
@@ -251,28 +278,32 @@ def upload_cv():
             return redirect(request.url)
 
         if file and file.filename.lower().endswith('.pdf'):
-            # Delete old CV file and record if exists
-            old_cv = CV.query.first()
-            if old_cv:
-                old_path = os.path.join(app.config['CV_UPLOAD_FOLDER'], old_cv.filename)
-                if os.path.exists(old_path):
-                    os.remove(old_path)
-                db.session.delete(old_cv)
+            try:
+                # Upload to Cloudinary as raw file (PDF)
+                upload_result = cloudinary.uploader.upload(
+                    file,
+                    resource_type="raw",
+                    folder="portfolio/cvs",
+                    public_id=f"cv_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+                )
+                cv_url = upload_result['secure_url']
 
-            # Save new CV
-            filename = secure_filename(file.filename)
-            save_path = os.path.join(app.config['CV_UPLOAD_FOLDER'], filename)
-            file.save(save_path)
+                # Delete old CV
+                old_cv = CV.query.first()
+                if old_cv:
+                    db.session.delete(old_cv)
 
-            new_cv = CV(
-                filename=filename,
-                original_name=file.filename
-            )
-            db.session.add(new_cv)
-            db.session.commit()
+                new_cv = CV(
+                    filename=cv_url,           # Cloudinary URL
+                    original_name=file.filename
+                )
+                db.session.add(new_cv)
+                db.session.commit()
 
-            flash('CV uploaded successfully!', 'success')
-            return redirect(url_for('cv'))
+                flash('CV uploaded successfully!', 'success')
+                return redirect(url_for('cv'))
+            except Exception as e:
+                flash(f'CV upload failed: {str(e)}', 'error')
         else:
             flash('Only PDF files are allowed.', 'error')
 

@@ -9,7 +9,9 @@
                 <h2><a href="#">{{ featured_project.title }}</a></h2>
                 <p>{{ featured_project.description }}</p>
             </header>
-            <a href="#" class="image main"><img src="{{ url_for('static', filename='images/' + featured_project.image) }}" alt="" /></a>
+            <a href="#" class="image main">
+                <img src="{{ featured_project.image }}" alt="{{ featured_project.title }}" />
+            </a>
             <ul class="actions special">
                 <li>
                     <a href="{{ featured_project.github_link or '#' }}"
@@ -30,7 +32,9 @@
                     <span class="date">{{ project.date.strftime('%B %d, %Y') }}</span>
                     <h2><a href="#">{{ project.title }}</a></h2>
                 </header>
-                <a href="#" class="image fit"><img src="{{ url_for('static', filename='images/' + project.image) }}" alt="" /></a>
+                <a href="#" class="image fit">
+                    <img src="{{ project.image }}" alt="{{ project.title }}" />
+                </a>
                 <p>{{ project.description }}</p>
                 <ul class="actions special">
                     <li>

@@ -14,9 +14,12 @@
                     <div class="tool-item">
                         {% if tool.image_filename %}
                             <div class="tool-image">
-                                <img src="{{ url_for('static', filename='tools/' + tool.image_filename) }}" 
-                                     alt="{{ tool.name }}" 
-                                     loading="lazy">
+                                {% if tool.image_filename %}
+                                    <img src="{{ tool.image_filename }}" alt="{{ tool.name }}" />
+                                {% else %}
+                                    <!-- optional fallback -->
+                                    <div class="tool-placeholder">No image</div>
+                                {% endif %}
                             </div>
                         {% else %}
                             <div class="tool-image placeholder">

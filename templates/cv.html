@@ -9,19 +9,16 @@
 
         {% if cv %}
             <div style="margin: 2rem 0; border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
-                <embed src="{{ url_for('static', filename='cvs/' + cv.filename) }}"
-                       type="application/pdf"
-                       width="100%"
-                       height="1000px"
-                       style="min-height: 800px;">
+                <embed src="{{ cv.filename }}" 
+                type="application/pdf" width="100%" height="900px">
             </div>
 
             <ul class="actions">
                 <li>
-                    <a href="{{ url_for('static', filename='cvs/' + cv.filename) }}"
-                       class="button primary large"
-                       download="{{ cv.original_name }}">
-                       Download CV (PDF)
+                    <a href="{{ cv.filename }}" 
+                        class="button primary large" 
+                        download="{{ cv.original_name }}">
+                        Download CV (PDF)
                     </a>
                 </li>
             </ul>
