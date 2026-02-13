@@ -37,7 +37,13 @@ mail = Mail(app)
 
 db = SQLAlchemy(app)
 
-
+# Add this decorator - runs only on first request to any route
+@app.before_request
+def initialize_database():
+    if not hasattr(app, 'db_initialized'):
+        with app.app_context():
+            db.create_all()
+        app.db_initialized = True
 
 @app.context_processor
 def inject_now():
